@@ -27,7 +27,7 @@
 				var scraper = $(this);
 				var duplicator = scraper.find('div.frame');
 				var subsection_link = scraper.attr('data-subsection-new');
-				var urlfield = $('input[type="text"]');
+				var urlfield = scraper.find('input[type="text"]');
 
 
 				/*-------------------------------------------------------------------------

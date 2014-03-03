@@ -1,9 +1,13 @@
 <?php
 
+	if (!defined('__IN_SYMPHONY__')) die('<h2>Symphony Error</h2><p>You cannot directly access this file</p>');
+
+	require_once(TOOLKIT . '/fields/field.upload.php');
+
 	require_once(CORE . '/class.cacheable.php');
 	require_once(EXTENSIONS . '/urlscraperfield/extension.driver.php');
 
-	Class fieldUrlScraper extends Field{
+	Class FieldUrlScraper extends FieldUpload {
 
 		private $_filter_origin = array();
 
@@ -97,24 +101,24 @@
 	/*-------------------------------------------------------------------------
 		Settings:
 	-------------------------------------------------------------------------*/
-private $supported_upload_fields = array('upload', 'uniqueupload', 'signedfileupload', 'image_upload');
+//private $supported_upload_fields = array('upload', 'uniqueupload', 'signedfileupload', 'image_upload');
 
 		public function displaySettingsPanel(&$wrapper, $errors=NULL){
 			parent::displaySettingsPanel($wrapper, $errors);
 
 			// Get current section id
-			$section_id = Symphony::Engine()->Page->_context[1];
+			//$section_id = Symphony::Engine()->Page->_context[1];
 
-			$div = new XMLElement('div', null, array('class' => 'two columns'));
+			// $div = new XMLElement('div', null, array('class' => 'two columns'));
 
 			//  url
-			$label = Widget::Label(__('URL'));
-			$label->appendChild(Widget::Input('fields['.$this->get('sortorder').'][url]', $this->get('url')));
-			if(isset($errors['url'])) {
-				$wrapper->appendChild(Widget::wrapFormElementWithError($label, $errors['url']));
-			} else {
-				$wrapper->appendChild($label);
-			};
+			// $label = Widget::Label(__('URL'));
+			// $label->appendChild(Widget::Input('fields['.$this->get('sortorder').'][url]', $this->get('url')));
+			// if(isset($errors['url'])) {
+			// 	$wrapper->appendChild(Widget::wrapFormElementWithError($label, $errors['url']));
+			// } else {
+			// 	$wrapper->appendChild($label);
+			// };
 
 	// related field
 	// $label = Widget::Label(__('Related upload field'), NULL);
@@ -137,7 +141,7 @@ private $supported_upload_fields = array('upload', 'uniqueupload', 'signedfileup
 	// 	$wrapper->appendChild($label);
 	// };
 
-			$wrapper->appendChild($div);
+			//$wrapper->appendChild($div);
 
 			//$label = Widget::Label('Default Marker Location');
 			//$label->appendChild(Widget::Input('fields['.$this->get('sortorder').'][default_location]', $this->get('default_location')));
@@ -147,7 +151,7 @@ private $supported_upload_fields = array('upload', 'uniqueupload', 'signedfileup
 			//$label->appendChild(Widget::Input('fields['.$this->get('sortorder').'][default_zoom]', $this->get('default_zoom')));
 			//$wrapper->appendChild($label);
 
-			$this->appendShowColumnCheckbox($wrapper);
+			//$this->appendShowColumnCheckbox($wrapper);
 		}
 
 		public function commit(){
@@ -160,6 +164,21 @@ private $supported_upload_fields = array('upload', 'uniqueupload', 'signedfileup
 			$fields = array();
 
 			$fields['field_id'] = $id;
+			$fields['destination'] = $this->get('destination');
+
+			return FieldManager::saveSettings($id, $fields);
+		}
+
+		// public function commit(){
+		// 	if(!parent::commit()) return false;
+
+		// 	$id = $this->get('id');
+
+		// 	if($id === false) return false;
+
+		// 	$fields = array();
+
+		// 	$fields['field_id'] = $id;
 			//$fields['default_location'] = $this->get('default_location');
 			//$fields['default_zoom'] = $this->get('default_zoom');
 
@@ -168,10 +187,10 @@ private $supported_upload_fields = array('upload', 'uniqueupload', 'signedfileup
 
 			//if(!$fields['default_zoom']) $fields['default_zoom'] = $this->_default_zoom;
 
-			Symphony::Database()->query("DELETE FROM `tbl_fields_".$this->handle()."` WHERE `field_id` = '$id' LIMIT 1");
+			//Symphony::Database()->query("DELETE FROM `tbl_fields_".$this->handle()."` WHERE `field_id` = '$id' LIMIT 1");
 
-			return Symphony::Database()->insert($fields, 'tbl_fields_' . $this->handle());
-		}
+			//return Symphony::Database()->insert($fields, 'tbl_fields_' . $this->handle());
+		//}
 
 	/*-------------------------------------------------------------------------
 		Publish:
@@ -179,8 +198,8 @@ private $supported_upload_fields = array('upload', 'uniqueupload', 'signedfileup
 
 		public function displayPublishPanel(&$wrapper, $data=NULL, $flagWithError=NULL, $fieldnamePrefix=NULL, $fieldnamePostfix=NULL, $entry_id=NULL){
 			if (class_exists('Administration') && Administration::instance()->Page) {
-				Administration::instance()->Page->addStylesheetToHead(URL . '/extensions/urlscraperfield/assets/urlscraperfield.publish.css', 'screen', 78);
-				Administration::instance()->Page->addScriptToHead(URL . '/extensions/urlscraperfield/assets/urlscraperfield.publish.js', 80);
+				Administration::instance()->Page->addStylesheetToHead(URL . '/extensions/urlscraperfield/assets/urlscraper.publish.css', 'screen', 78);
+				Administration::instance()->Page->addScriptToHead(URL . '/extensions/urlscraperfield/assets/urlscraper.publish.js', 80);
 			}
 			
 			// input values
@@ -207,6 +226,28 @@ private $supported_upload_fields = array('upload', 'uniqueupload', 'signedfileup
 			$label->setAttribute('class', 'product-url');
 			$label->appendChild(Widget::Input('fields'.$fieldnamePrefix.'['.$this->get('element_name').'][url]'.$fieldnamePostfix, ''));
 			$wrapper->appendChild($label);
+
+			$divframe = new XMLElement('div', NULL, array('class' => 'dark frame editable searchable'));
+			$divcontent = new XMLElement('div', NULL, array('class' => 'content'));
+			$iframe = new XMLElement('iframe');
+			
+			$divcontent->appendChild($iframe);
+			$divframe->appendChild($divcontent);
+			
+			$wrapper->appendChild($divframe);
+							// <div class="dark frame editable searchable">
+							// 	<ol>
+							// 	<li data-value="6485" class="instance">
+							// 		<input type="hidden" value="6485" />
+							// 		<header>British Models - 2014's New Faces</header>
+							// 		<div class="content">
+										
+							// 			<iframe></iframe>
+
+							// 		</div>
+							//  	</li>
+							// 	</ol>
+							// </div>			
 		}
 
 		public function processRawFieldData($data, &$status, $simulate=false, $entry_id=NULL){

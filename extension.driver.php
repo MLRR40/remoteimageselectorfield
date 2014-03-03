@@ -1,15 +1,6 @@
 <?php
 
-	if (!defined('__IN_SYMPHONY__')) die('<h2>Symphony Error</h2><p>You cannot directly access this file</p>');
-
-	require_once(TOOLKIT . '/fields/field.upload.php');
-
-	Class extension_urlscraperfield extends FieldUpload{
-
-		public function __construct(){
-			parent::__construct();
-			$this->_name = __('Url Scraper');
-		}
+	Class extension_urlscraperfield extends Extension{
 		
 		public function uninstall(){
 			Symphony::Database()->query("DROP TABLE `tbl_fields_urlscraper`");
@@ -20,6 +11,8 @@
 			  `id` int(11) unsigned NOT NULL auto_increment,
 			  `field_id` int(11) unsigned NOT NULL,
 			  `url` varchar(1000) NOT NULL,
+			  `destination` varchar(255) NOT NULL,
+			  `validator` varchar(50),
 			  PRIMARY KEY (`id`),
 			  UNIQUE KEY `field_id` (`field_id`)
 			) TYPE=MyISAM");
