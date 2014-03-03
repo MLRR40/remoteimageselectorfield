@@ -5,13 +5,6 @@
 
 	Class fieldUrlScraper extends Field{
 
-		private $_geocode_cache_expire = 60; // minutes
-
-		// defaults used when user doesn't enter defaults when adding field to section
-		private $_default_location = 'London, England';
-		private $_default_coordinates = '51.58129468879224, -0.554702996875005'; // London, England
-		private $_default_zoom = 3;
-
 		private $_filter_origin = array();
 
 		public function __construct(){
@@ -41,8 +34,15 @@
 				  `id` int(11) unsigned NOT NULL auto_increment,
 				  `entry_id` int(11) unsigned NOT NULL,
 				  `url` varchar(1000) default NULL,
+				  `fileurl` varchar(1000) default NULL,
+				  `file` varchar(255) default NULL,
+				  `size` int(11) unsigned NULL,
+				  `mimetype` varchar(100) default NULL,
+				  `meta` varchar(255) default NULL,
 				  PRIMARY KEY  (`id`),
-				  KEY `entry_id` (`entry_id`)
+				  UNIQUE KEY `entry_id` (`entry_id`),
+				  KEY `file` (`file`),
+				  KEY `mimetype` (`mimetype`)
 				) TYPE=MyISAM;"
 			);
 		}
@@ -105,39 +105,39 @@ private $supported_upload_fields = array('upload', 'uniqueupload', 'signedfileup
 			// Get current section id
 			$section_id = Symphony::Engine()->Page->_context[1];
 
-$div = new XMLElement('div', null, array('class' => 'two columns'));
+			$div = new XMLElement('div', null, array('class' => 'two columns'));
 
-//  url
-	$label = Widget::Label(__('URL'));
-	$label->appendChild(Widget::Input('fields['.$this->get('sortorder').'][url]', $this->get('url')));
-	if(isset($errors['url'])) {
-		$wrapper->appendChild(Widget::wrapFormElementWithError($label, $errors['url']));
-	} else {
-		$wrapper->appendChild($label);
-	};
+			//  url
+			$label = Widget::Label(__('URL'));
+			$label->appendChild(Widget::Input('fields['.$this->get('sortorder').'][url]', $this->get('url')));
+			if(isset($errors['url'])) {
+				$wrapper->appendChild(Widget::wrapFormElementWithError($label, $errors['url']));
+			} else {
+				$wrapper->appendChild($label);
+			};
 
 	// related field
-	$label = Widget::Label(__('Related upload field'), NULL);
-	$fields = FieldManager::fetch(NULL, $section_id, 'ASC', 'sortorder', NULL, NULL, sprintf("AND (type IN ('%s'))", implode("', '", $this->supported_upload_fields)));
-	$options = array(
-		array('', false, __('None Selected'), ''),
-	);
-	$attributes = array(
-		array()
-	);
-	if (is_array($fields) && !empty($fields)) {
-		foreach ($fields as $field) {
-			$options[] = array($field->get('id'), ($field->get('id') == $this->get('related_field_id')), $field->get('label'));
-		}
-	};
-	$label->appendChild(Widget::Select('fields['.$this->get('sortorder').'][related_field_id]', $options));
-	if(isset($errors['related_field_id'])) {
-		$wrapper->appendChild(Widget::wrapFormElementWithError($label, $errors['related_field_id']));
-	} else {
-		$wrapper->appendChild($label);
-	};
+	// $label = Widget::Label(__('Related upload field'), NULL);
+	// $fields = FieldManager::fetch(NULL, $section_id, 'ASC', 'sortorder', NULL, NULL, sprintf("AND (type IN ('%s'))", implode("', '", $this->supported_upload_fields)));
+	// $options = array(
+	// 	array('', false, __('None Selected'), ''),
+	// );
+	// $attributes = array(
+	// 	array()
+	// );
+	// if (is_array($fields) && !empty($fields)) {
+	// 	foreach ($fields as $field) {
+	// 		$options[] = array($field->get('id'), ($field->get('id') == $this->get('related_field_id')), $field->get('label'));
+	// 	}
+	// };
+	// $label->appendChild(Widget::Select('fields['.$this->get('sortorder').'][related_field_id]', $options));
+	// if(isset($errors['related_field_id'])) {
+	// 	$wrapper->appendChild(Widget::wrapFormElementWithError($label, $errors['related_field_id']));
+	// } else {
+	// 	$wrapper->appendChild($label);
+	// };
 
-$wrapper->appendChild($div);
+			$wrapper->appendChild($div);
 
 			//$label = Widget::Label('Default Marker Location');
 			//$label->appendChild(Widget::Input('fields['.$this->get('sortorder').'][default_location]', $this->get('default_location')));
