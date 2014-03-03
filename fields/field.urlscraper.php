@@ -227,11 +227,16 @@
 			$label->appendChild(Widget::Input('fields'.$fieldnamePrefix.'['.$this->get('element_name').'][url]'.$fieldnamePostfix, ''));
 			$wrapper->appendChild($label);
 
+			$label = Widget::Label('File URL');
+			$label->appendChild(Widget::Input('fields'.$fieldnamePrefix.'['.$this->get('element_name').'][fileurl]'.$fieldnamePostfix, ''));
+			$wrapper->appendChild($label);
+
 			$divframe = new XMLElement('div', NULL, array('class' => 'dark frame editable searchable'));
 			$divcontent = new XMLElement('div', NULL, array('class' => 'content'));
-			$iframe = new XMLElement('iframe');
 			
-			$divcontent->appendChild($iframe);
+			//$iframe = new XMLElement('iframe');
+			//$divcontent->appendChild($iframe);
+
 			$divframe->appendChild($divcontent);
 			
 			$wrapper->appendChild($divframe);
@@ -252,6 +257,8 @@
 
 		public function processRawFieldData($data, &$status, $simulate=false, $entry_id=NULL){
 			$status = self::__OK__;
+
+			var_dump($data);exit;
 
 			if (is_array($data)) {
 				$coordinates = split(',', $data['coordinates']);

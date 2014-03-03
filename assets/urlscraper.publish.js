@@ -29,6 +29,13 @@
 				var subsection_link = scraper.attr('data-subsection-new');
 				var urlfield = scraper.find('input[type="text"]');
 
+				var cache = {
+					input: $('#url'),
+					fetch: $('#fetch'),
+					imageDiv: $('#images'),
+					dataOut: null,
+					proxyUrl: 'http://' + window.location.hostname + '/extensions/urlscraperfield/lib/proxy.php'
+				};
 
 				/*-------------------------------------------------------------------------
 				Initialisation
@@ -46,14 +53,17 @@
 
 				urlfield.on('change', null, function fetchUrl(event) {
 					var item = $(this),
-					iframe = duplicator.find('iframe');
+					
+					contentDiv = duplicator.find('.content');
+					cache.imageDiv = contentDiv;
 
 					var url = urlfield.val();
+					sendAjax(url);
 
 					// Load url
-					iframe.addClass('initialise loading new').attr('src', url).load(function() {
-						load(duplicator);
-					});
+					//iframe.addClass('initialise loading new').attr('src', url).load(function() {
+					//	load(duplicator);
+					//});
 				});
 				
 				var load = function(item) {
@@ -88,6 +98,44 @@
 						height: height
 					}, 'fast');
 				};
+
+				var sendAjax = function(url) {
+					var url = cache.proxyUrl + "?url=" + url;
+					console.log(url);
+
+					$.ajax({
+						url: url,
+						type: 'get',
+						//dataType: 'json',
+						success: function(data){   
+							parseData(data);
+						},
+						error:function(){
+						  console.log('error');
+						}   
+					}); 
+
+				};
+
+				var parseData = function(data) {
+					var parse = $.parseJSON(data);
+					displayImages(parse);
+				}
+
+				var displayImages = function(data) {
+					$.each(data, function(key, value) {
+			    	cache.imageDiv.append(
+			    		"<img src='" + addHttp(value) + "'>"
+			    	)
+					});
+				}
+
+				var addHttp = function(url) {
+					if (!/^(f|ht)tps?:\/\//i.test(url)) {
+						url = "http://" + "www.openair.co.uk/" + url;
+					}
+					return url;
+				}
 
 			});
 		
