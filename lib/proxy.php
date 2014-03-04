@@ -1,5 +1,5 @@
 <?PHP
-  require_once('parser.php');
+require_once('parser.php');
 
 // Script: Simple PHP Proxy: Get external HTML, JSON and more!
 //
@@ -146,53 +146,116 @@ $valid_url_regex = '/.*/';
 $url = $_GET['url'];
 
 if ( !$url ) {
-  
+
   // Passed url not specified.
   $contents = 'ERROR: url not specified';
   $status = array( 'http_code' => 'ERROR' );
   echo $status; exit;
-  
+
 } else if ( !preg_match( $valid_url_regex, $url ) ) {
-  
+
   // Passed url doesn't match $valid_url_regex.
   $contents = 'ERROR: invalid url';
   $status = array( 'http_code' => 'ERROR' );
 
-  
+
 } else {
   $ch = curl_init( $url );
 
   if ( strtolower($_SERVER['REQUEST_METHOD']) == 'post' ) {
-	curl_setopt( $ch, CURLOPT_POST, true );
-	curl_setopt( $ch, CURLOPT_POSTFIELDS, $_POST );
+  curl_setopt( $ch, CURLOPT_POST, true );
+  curl_setopt( $ch, CURLOPT_POSTFIELDS, $_POST );
   }
-  
+
   curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, true );
   curl_setopt( $ch, CURLOPT_HEADER, true );
   curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-  
-  
+
+
   list( $header, $contents ) = preg_split( '/([\r\n][\r\n])\\1/', curl_exec( $ch ), 2 );
-  
+
   $status = curl_getinfo( $ch );
-  
+
   curl_close( $ch );
 
 }
 
   // Split header text into an array.
   $header_text = preg_split( '/[\r\n]+/', $header );
-  
-  $html = str_get_html($contents);
-  $image = array();
 
-  // Find all images 
-  $index = 0;
-  foreach($html->find('img') as $element) {
-  		$image[$index] = $element->src;
-  		$index++;
+  $html = str_get_html($contents);
+
+  $image = array();
+  $open_graph = array();
+
+  /*********************************
+  /*  Image Grabbing
+  /*  We grab the og:image first because it's the first choice from 
+  /*  the scraped website, then we grab all the images and merge the arrays
+  /*********************************/
+  if( $html->find('meta[name=og:image]') ){
+    
+    foreach($html->find('meta[name=og:image]') as $element) {
+    
+      $open_graph["0"] = $element->attr['content'];
+
+    }
   }
 
-  echo json_encode($image, JSON_FORCE_OBJECT);
+  $index = 1;
 
-?>
+  foreach($html->find('img') as $element) {
+    
+    $image[$index] = $element->src;
+    $index++;
+
+  }
+
+  // now lets remove all non-links
+  foreach($image as $key => $value) {
+
+    if(!filter_var($value, FILTER_VALIDATE_URL)) {
+
+      unset($image[$key]);
+
+    }
+  }
+
+  // custom filters to allow loading of jpegs first as they are probably more relevant
+  function find_jpg($url) {
+
+    $extensions = array("jpg", "jpeg");
+
+      if(!is_array($extensions)) $extensions = array($extensions);
+      foreach($extensions as $extension) {
+          if( ($pos = strpos($url, $extension))!== false ){ 
+            return $url;
+          }
+      }
+      return false;
+  }
+
+  function find_else($url) {
+
+    $extensions = array("jpg", "jpeg");
+
+      if(!is_array($extensions)) $extensions = array($extensions);
+      foreach($extensions as $extension) {
+          if( ($pos = strpos($url, $extension))!== false ){ 
+            return false;
+          }
+      }
+
+      return $url;
+    }
+
+  // filtering arrays!
+  $jpg_array = array_filter($image, "find_jpg");
+  $non_jpg_array = array_filter($image, "find_else");
+
+  //merge arrays to show og:image first, followed by all other jpgs, then all other image types (possibly icons and stuff)
+  $results = array_merge($open_graph, $jpg_array, $non_jpg_array);
+
+  echo json_encode($results, JSON_FORCE_OBJECT);
+
+  ?>
