@@ -34,7 +34,7 @@
 				Initialisation
 				-------------------------------------------------------------------------*/
 					
-				selectorFrame.symphonyselectorFrame({
+				selectorFrame.symphonyDuplicator({
 					headers: 'header',
 					constructable: selectorFrame.is('.constructable'),
 					destructable: selectorFrame.is('.destructable'),
