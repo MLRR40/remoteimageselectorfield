@@ -19,33 +19,33 @@
 
 		$('div.field-remoteimageselector').each(
 			function remoteimageselector() {
-				var scraper = $(this);
-				var duplicator = scraper.find('div.frame');
-				var urlfield = scraper.find('input[type="text"]');
+				var selector = $(this);
+				var selectorFrame = selector.find('div.frame');
+				var urlfield = selector.find('input[type="text"]');
 	
 				var settings = {
-					input: scraper.find('input[type="text"]'),
+					input: selector.find('input[type="text"]'),
 					slider: $('.bxslider'),
 					proxyUrl: 'http://' + window.location.hostname + '/extensions/remoteimageselectorfield/lib/proxy.php',
-					saveURL: scraper.find('input[type="hidden"]')
+					saveURL: selector.find('input[type="hidden"]')
 				};
 
 				/*-------------------------------------------------------------------------
 				Initialisation
 				-------------------------------------------------------------------------*/
 					
-				duplicator.symphonyDuplicator({
+				selectorFrame.symphonyselectorFrame({
 					headers: 'header',
-					constructable: duplicator.is('.constructable'),
-					destructable: duplicator.is('.destructable'),
+					constructable: selectorFrame.is('.constructable'),
+					destructable: selectorFrame.is('.destructable'),
 					collapsible: true,
-					orderable: duplicator.is('.sortable'),
-					maximum: (duplicator.is('.multiple') ? 1000 : 1),
+					orderable: selectorFrame.is('.sortable'),
+					maximum: (selectorFrame.is('.multiple') ? 1000 : 1),
 					save_state: false
 				});
 
 				settings.input.on('change', null, function fetchUrl(event) {
-					duplicator.addClass('open');
+					selectorFrame.addClass('open');
 					var url = $(this).val();
 					sendAjax(url);
 				});
@@ -53,7 +53,7 @@
 				// Image Preview
 				var previewImage = function() {
 
-					link = scraper.find('a.image');
+					link = selector.find('a.image');
 
 					if (link.attr('href').indexOf('/workspace/') >= 0) {
 						if (page == 'index') {
@@ -89,7 +89,7 @@
 
 				var overrideRemoveFile = function() {
 
-					$remove_link = scraper.find('label.file:has(a) span.frame em');
+					$remove_link = selector.find('label.file:has(a) span.frame em');
 					$remove_link.unbind('click.admin');
 					$remove_link.on('click.admin', function(event) {	
 					 	// Prevent clickthrough
@@ -119,7 +119,7 @@
 					
 						success: function(data){   
 							console.log(data);
-							duplicator.find('.content').removeClass('loading');
+							selectorFrame.find('.content').removeClass('loading');
 							parseData(data);
 						},
 						error:function(){
@@ -155,12 +155,12 @@
 					initSelection();
 
 					var height = settings.slider.outerHeight();
-					resize(duplicator.find('.content'), height);
+					resize(selectorFrame.find('.content'), height);
 				}
 
 				var addHttp = function(url) {
 					if (!/^(f|ht)tps?:\/\//i.test(url)) {
-						url = "http://" + "vsco.co/" + url;
+						url = "http://" + url;
 					}
 					return url;
 				}
