@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<extension id="urlscraperfield" status="released" xmlns="http://symphony-cms.com/schemas/extension/1.0">
-	<name>URL Scraper Field</name>
+<extension id="remoteimageselectorfield" status="released" xmlns="http://symphony-cms.com/schemas/extension/1.0">
+	<name>Remote Image Selector Field</name>
 	<description></description>
-	<repo type="github"></repo>
+	<repo type="github">https://github.com/jimlambie/remoteimageselectorfield</repo>
 	<url type="discuss"></url>
 	<types>
 		<type>Field Types</type>
 	</types>
 	<authors>
 		<author>
-			<name github="" symphony="community">We Are Daddy</name>
+			<name github="dinodachi" symphony="community">David Allen</name>
+			<name github="jimlambie" symphony="community">James Lambie</name>
 		</author>
 	</authors>
 	<media>
 		<item type="image" url=""></item>
 	</media>
 	<releases>
-		<release version="0.0.1" date="2014-03-03" min="2.3.x" />
+		<release version="1.0.0" date="2014-03-06" min="2.3.x" />
 	</releases>
 </extension>

@@ -1,0 +1,50 @@
+/**
+ * Remote Image Selector Field for Symphony
+ *
+ * @authors: Dave Allen, James Lambie @ We Are Daddy
+ * @source: http://github.com/jimlambie/remoteimageselectorfield
+ */
+
+
+.field-remoteimageselector label {
+	margin-bottom: 2px;
+}
+
+.field-remoteimageselector div.frame {
+	display: none;
+}
+
+.field-remoteimageselector div.frame.open {
+	display: block;
+}
+
+.field-remoteimageselector .frame .content.loading {
+	overflow: hidden;
+	height: 50px;
+	background-image: url(images/loading_dark.gif) !important;
+	background-position: center !important;
+	background-repeat: no-repeat !important;
+}
+
+.field-remoteimageselector .dark.editable.searchable.duplicator.empty.collapsible {
+	background: #333;
+	margin: 20px 0 0 0;
+}
+
+.field-remoteimageselector p.label {
+	margin: 0 0 5px;
+}
+
+.field-remoteimageselector .bx-loading {
+	display: none;
+}
+
+.field-remoteimageselector img.slider_image {
+	cursor: pointer;
+}
+
+.field-remoteimageselector img.slider_image.selected {
+	border: 4px solid greenyellow;
+	margin: 3px;
+	width: 95%;
+}

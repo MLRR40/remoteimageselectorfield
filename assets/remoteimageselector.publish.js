@@ -5,7 +5,7 @@
 	 * This plugin adds a field to allow retrieving images from an external URL
 	 *
 	 * @authors: David Allen, James Lambie @ We Are Daddy
-	 * @source: http://github.com/jimlambie/urlscraperfield
+	 * @source: http://github.com/jimlambie/remoteimageselectorfield
 
 	 * @credits: image preview & getDimensions function lifted from https://github.com/symphonists/image_index_preview
 	 */
@@ -17,8 +17,8 @@
 		root = Symphony.Context.get('root');
 		page = Symphony.Context.get('env')['page'];		
 
-		$('div.field-urlscraper').each(
-			function urlscraper() {
+		$('div.field-remoteimageselector').each(
+			function remoteimageselector() {
 				var scraper = $(this);
 				var duplicator = scraper.find('div.frame');
 				var urlfield = scraper.find('input[type="text"]');
@@ -26,7 +26,7 @@
 				var settings = {
 					input: scraper.find('input[type="text"]'),
 					slider: $('.bxslider'),
-					proxyUrl: 'http://' + window.location.hostname + '/extensions/urlscraperfield/lib/proxy.php',
+					proxyUrl: 'http://' + window.location.hostname + '/extensions/remoteimageselectorfield/lib/proxy.php',
 					saveURL: scraper.find('input[type="hidden"]')
 				};
 

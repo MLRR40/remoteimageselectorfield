@@ -5,15 +5,15 @@
 	require_once(TOOLKIT . '/fields/field.upload.php');
 
 	require_once(CORE . '/class.cacheable.php');
-	require_once(EXTENSIONS . '/urlscraperfield/extension.driver.php');
+	require_once(EXTENSIONS . '/remoteimageselectorfield/extension.driver.php');
 
-	Class FieldUrlScraper extends FieldUpload {
+	Class Fieldremoteimageselector extends FieldUpload {
 
 		private $_filter_origin = array();
 
 		public function __construct(){
 			parent::__construct();
-			$this->_name = 'Url Scraper';
+			$this->_name = 'Remote Image Selector';
 		}
 
 	/*-------------------------------------------------------------------------
@@ -81,10 +81,10 @@
 
 		public function displayPublishPanel(&$wrapper, $data=NULL, $flagWithError=NULL, $fieldnamePrefix=NULL, $fieldnamePostfix=NULL, $entry_id=NULL){
 			if (class_exists('Administration') && Administration::instance()->Page) {
-				Administration::instance()->Page->addStylesheetToHead(URL . '/extensions/urlscraperfield/assets/jquery.bxslider.css');
-				Administration::instance()->Page->addScriptToHead(URL . '/extensions/urlscraperfield/assets/jquery.bxslider.min.js', 78);
-				Administration::instance()->Page->addStylesheetToHead(URL . '/extensions/urlscraperfield/assets/urlscraper.publish.css', 'screen', 80);
-				Administration::instance()->Page->addScriptToHead(URL . '/extensions/urlscraperfield/assets/urlscraper.publish.js', 82);
+				Administration::instance()->Page->addStylesheetToHead(URL . '/extensions/remoteimageselectorfield/assets/jquery.bxslider.css');
+				Administration::instance()->Page->addScriptToHead(URL . '/extensions/remoteimageselectorfield/assets/jquery.bxslider.min.js', 78);
+				Administration::instance()->Page->addStylesheetToHead(URL . '/extensions/remoteimageselectorfield/assets/remoteimageselector.publish.css', 'screen', 80);
+				Administration::instance()->Page->addScriptToHead(URL . '/extensions/remoteimageselectorfield/assets/remoteimageselector.publish.js', 82);
 			}
 
 			$fieldlabel = new XMLElement('p', $this->get('label'));
