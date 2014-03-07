@@ -47,6 +47,10 @@
 				settings.input.on('change', null, function fetchUrl(event) {
 					selectorFrame.addClass('open');
 					var url = $(this).val();
+					if (url == '') {
+						settings.saveURL.val('');
+						return false;
+					}
 					sendAjax(url);
 				});
 
