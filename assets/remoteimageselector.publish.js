@@ -146,8 +146,8 @@
 
 					settings.slider.bxSlider({	
 						mode: 'horizontal',
-					  minSlides: 2,
-						maxSlides: 2,
+					  minSlides: 1,
+						maxSlides: 1,
 						slideWidth: 300,
 						useCss: false,
 						adaptiveHeight:true,
