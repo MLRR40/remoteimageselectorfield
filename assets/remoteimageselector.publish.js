@@ -54,7 +54,9 @@
 				var previewImage = function() {
 
 					link = selector.find('a.image');
-					if (!link) return;
+					
+					if (link.length == 0) return;
+					
 					if (link.attr('href').indexOf('/workspace/') >= 0) {
 						if (page == 'index') {
 							if (link.data('path') != null) {
