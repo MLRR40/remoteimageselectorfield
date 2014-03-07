@@ -41,6 +41,7 @@
 
 .field-remoteimageselector img.slider_image {
 	cursor: pointer;
+	height: 100px;
 }
 
 .field-remoteimageselector img.slider_image.selected {

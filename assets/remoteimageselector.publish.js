@@ -146,12 +146,12 @@
 
 					settings.slider.bxSlider({	
 						mode: 'horizontal',
-					  	minSlides: 2,
+					  minSlides: 2,
 						maxSlides: 2,
 						slideWidth: 300,
 						useCss: false,
 						adaptiveHeight:true,
-						infiniteLoop: false
+						infiniteLoop: true
 					});
 
 					initSelection();
