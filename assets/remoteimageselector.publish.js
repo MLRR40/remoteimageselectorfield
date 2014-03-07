@@ -151,7 +151,8 @@
 						slideWidth: 300,
 						useCss: false,
 						adaptiveHeight:true,
-						infiniteLoop: true
+						infiniteLoop: true,
+						pager: false
 					});
 
 					initSelection();
