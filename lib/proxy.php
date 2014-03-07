@@ -185,6 +185,10 @@ if ( !$url ) {
 
   $html = str_get_html($contents);
 
+  $parsed_url = parse_url($url);
+  $baseurl = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : ''; 
+  $baseurl = $baseurl . isset($parsed_url['host']) ? $parsed_url['host'] : '';  
+
   $image = array();
   $open_graph = array();
 
@@ -213,11 +217,11 @@ if ( !$url ) {
 
   // now lets remove all non-links
   foreach($image as $key => $value) {
-
-    if(!filter_var($value, FILTER_VALIDATE_URL)) {
-
+    if (!filter_var($value, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED)) {
+      $image[$key] = $baseurl.'/'.$value;
+    }
+    elseif(!filter_var($value, FILTER_VALIDATE_URL)) {
       unset($image[$key]);
-
     }
   }
 
