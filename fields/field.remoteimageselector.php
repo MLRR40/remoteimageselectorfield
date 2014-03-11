@@ -308,8 +308,8 @@
 			$data['type'] = General::getMimeType($file);
 
 			return array(
-				'url' => $data['url'],
-				'fileurl' => $data['fileurl'],
+				'url' => urlencode($data['url']),
+				'fileurl' => urlencode($data['fileurl']),
 				'file' =>		basename($file),
 				'size' =>		$data['size'],
 				'mimetype' =>	$data['type'],
