@@ -308,8 +308,8 @@
 			$data['type'] = General::getMimeType($file);
 
 			return array(
-				'url' => urlencode($data['url']),
-				'fileurl' => urlencode($data['fileurl']),
+				'url' => $data['url'],
+				'fileurl' => $data['fileurl'],
 				'file' =>		basename($file),
 				'size' =>		$data['size'],
 				'mimetype' =>	$data['type'],
@@ -330,7 +330,7 @@
 			$file = $this->getFilePath($data['file']);
 
 			$element = new XMLElement($this->get('element_name'));
-			$element->appendChild(new XMLElement('url', $data['url']));
+			$element->appendChild(new XMLElement('url', urlencode($data['url'])));
 
 			$item = new XMLElement('image');
 			$item->setAttributeArray(array(
@@ -347,7 +347,7 @@
 			));
 
 			$item->appendChild(new XMLElement('filename', General::sanitize(basename($file))));
-			$item->appendChild(new XMLElement('fileurl', $data['fileurl']));
+			$item->appendChild(new XMLElement('fileurl', urlencode($data['fileurl'])));
 
 			$m = unserialize($data['meta']);
 
