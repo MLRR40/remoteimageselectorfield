@@ -161,7 +161,7 @@
 
 					initSelection();
 
-					var height = settings.slider.outerHeight();
+					var height = 200;
 					resize(selectorFrame.find('.content'), height);
 				}
 
