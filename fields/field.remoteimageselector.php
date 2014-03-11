@@ -139,12 +139,12 @@
 			// No file given, save empty data:
 			if ($data === null) {
 				return array(
-					'url' =>		null,
-					'fileurl' =>		null,
-					'file' =>		null,
-					'mimetype' =>	null,
-					'size' =>		null,
-					'meta' =>		null
+					'url' 			=> null,
+					'fileurl' 	=> null,
+					'file' 			=> null,
+					'mimetype'	=> null,
+					'size' 			=> null,
+					'meta' 			=> null
 				);
 			}
 
@@ -154,7 +154,7 @@
 
 			if (is_array($data)) {
 
-				if ($data['fileurl']) {
+				if ($data['fileurl'] && strlen($data['fileurl']) > 0) {
 
 					try {
 
@@ -179,8 +179,8 @@
 							$data['name'] = str_replace($abs_path . '/', '', $renamed_file);
 						}
 
-						echo $this->get('destination');
-						echo $temp_file;
+						// var_dump($this->get('destination'));
+						// var_dump($temp_file);exit;
 						file_put_contents($temp_file, file_get_contents($data['fileurl']));
 					}
 					catch (Exception $e) {
@@ -188,15 +188,22 @@
 					}
 
 				}
+				else {
+					return array(
+						'url' 			=> $data['url'],
+						'fileurl' 	=> null,
+						'file' 			=> null,
+						'mimetype'	=> null,
+						'size' 			=> null,
+						'meta' 			=> null
+					);
+				}
 
 			}
 
 
 			// Its not an array, so just retain the current data and return:
 			if (is_array($data) === false) {
-
-				//http://www.ultralightoutdoorgear.co.uk/images/products/1360339774-40183500.jpg
-				var_dump($data);exit;
 
 				$file = $this->getFilePath(basename($data));
 

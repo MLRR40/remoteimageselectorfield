@@ -19,6 +19,6 @@
 		<item type="image" url=""></item>
 	</media>
 	<releases>
-		<release version="1.0.0" date="2014-03-06" min="2.3.x" />
+		<release version="1.0.2" date="2014-03-06" min="2.3.x" />
 	</releases>
 </extension>
