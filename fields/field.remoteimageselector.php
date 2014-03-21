@@ -182,6 +182,20 @@
 						// var_dump($this->get('destination'));
 						// var_dump($temp_file);exit;
 						file_put_contents($temp_file, file_get_contents($data['fileurl']));
+
+			// if ($uploaded === false) {
+			// 	$message = __(
+			// 		'There was an error while trying to upload the file %1$s to the target directory %2$s.',
+			// 		array(
+			// 			'<code>' . $data['name'] . '</code>',
+			// 			'<code>workspace/' . ltrim($rel_path, '/') . '</code>'
+			// 		)
+			// 	);
+			// 	$status = self::__ERROR_CUSTOM__;
+
+			// 	return false;
+			// }
+									
 					}
 					catch (Exception $e) {
     				echo 'Caught exception: ',  $e->getMessage(), "\n";exit;
@@ -288,19 +302,6 @@
 			$data['name'] = $temp_filename;
 
 			$file = $this->getFilePath($data['name']);
-
-			// if ($uploaded === false) {
-			// 	$message = __(
-			// 		'There was an error while trying to upload the file %1$s to the target directory %2$s.',
-			// 		array(
-			// 			'<code>' . $data['name'] . '</code>',
-			// 			'<code>workspace/' . ltrim($rel_path, '/') . '</code>'
-			// 		)
-			// 	);
-			// 	$status = self::__ERROR_CUSTOM__;
-
-			// 	return false;
-			// }
 
 			// File has been replaced:
 			if (
